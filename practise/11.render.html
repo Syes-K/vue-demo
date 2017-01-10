@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <anchored-heading-template :level="3">Hello world!</anchored-heading-template>
+    <anchored-heading-render :level="3">Hello world!</anchored-heading-render>
+</div>
+<script>
+    Vue.component('anchored-heading-template', {
+        template: `
+             <div>
+                <h1 v-if="level === 1">use template >>
+                  <slot></slot>
+                </h1>
+                <h2 v-if="level === 2">use template >>
+                  <slot></slot>
+                </h2>
+                <h3 v-if="level === 3">use template >>
+                  <slot></slot>
+                </h3>
+                <h4 v-if="level === 4">use template >>
+                  <slot></slot>
+                </h4>
+                <h5 v-if="level === 5">use template >>
+                  <slot></slot>
+                </h5>
+                <h6 v-if="level === 6">use template >>
+                  <slot></slot>
+                </h6>
+              </div>
+        `,
+        props: {
+            level: {
+                type: Number,
+                required: true
+            }
+        }
+    });
+
+    Vue.component('anchored-heading-render', {
+        render: function (createElement) {
+            return createElement(
+                    'div',
+                    [
+                        createElement('span',{
+                            domProps: {
+                                innerHTML: 'use render >> '
+                            }
+                        }),
+
+                        createElement(
+                                'h' + this.level,   // tag name 标签名称
+                                {
+                                    attrs: {
+                                        id: 'h111'
+                                    }
+                                },
+                                this.$slots.default // 子组件中的阵列
+                        )
+                    ]
+            )
+        },
+        props: {
+            level: {
+                type: Number,
+                required: true
+            }
+        }
+    });
+    new Vue({
+        el: '#app'
+    });
+</script>
+</body>
+</html>

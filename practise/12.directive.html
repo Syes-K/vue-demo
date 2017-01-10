@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div v-demo.a.b="e"></div>
+    <hr>
+    <div v-demo:red.x="1"></div>
+    <div v-demo:#ff1.c.d="1"></div>
+</div>
+<script>
+    Vue.directive('demo',function (el, binding, vnode) {
+        var s = JSON.stringify;
+        el.innerHTML =
+                'name: '       + s(binding.name) + '<br>' +
+                'value: '      + s(binding.value) + '<br>' +
+                'expression: ' + s(binding.expression) + '<br>' +
+                'argument: '   + s(binding.arg) + '<br>' +
+                'modifiers: '  + s(binding.modifiers) + '<br>' +
+                'vnode keys: ' + Object.keys(vnode).join(', ')
+        if(binding.arg){
+            el.style.backgroundColor=binding.arg;
+        }
+
+    })
+    new Vue({
+        el:'#app',
+        data:{
+            a:'1',
+            b:'2',
+            c:'3',
+            d:'4',
+            e:{x:1,y:2}
+        }
+    })
+</script>
+</body>
+</html>

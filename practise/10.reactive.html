@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+</head>
+<body>
+<h3>change data["..."]</h3>
+<div id="app">
+    a:{{a}} <input type="text" v-model="a" ref="a">
+    <br>
+    b:{{b}}
+
+</div>
+<input type="text" id="txtA" value="1">
+<button onclick="resetA()">reset a</button>
+<br>
+<input type="text" id="txtB" value="">
+<button onclick="resetB_y()">reset b.y</button>
+<button onclick="resetB_y_by$Set()">reset b.y by $set</button>
+<script>
+    let vm=new Vue({
+        el:"#app",
+        data:{
+            a:1,
+            b:{x:3}
+        }
+    });
+    function resetA() {
+        var txtA_Value=document.getElementById('txtA').value;
+        vm.a=txtA_Value;
+        console.log(vm.$refs.a.value===txtA_Value);// will be false
+        vm.$nextTick(function () {
+            console.log(vm.$refs.a.value===txtA_Value);//will be true
+        })
+    }
+    function resetB_y() {
+        vm.b.y=document.getElementById('txtB').value;
+    }
+    function resetB_y_by$Set() {
+//        Vue.set(vm.b,'y',document.getElementById('txtB').value);
+        vm.$set(vm.b,'y',document.getElementById('txtB').value);
+        vm.b=Object.assign({},vm.b);
+    }
+</script>
+</body>
+</html>

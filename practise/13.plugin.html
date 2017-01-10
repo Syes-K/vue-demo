@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <my-child :age="21"></my-child>
+</div>
+<script>
+    let BaseComponent = {
+      install:function (Vue,options) {
+          Vue.mixin({
+              created:function () {
+                  console.log(this)
+              }
+          });
+      }
+    };
+    Vue.use(BaseComponent);
+    new Vue({
+        el:'#app',
+        data:{
+            name:'base'
+        },
+        components:{
+            'my-child':Vue.extend({
+                template:'<h1>child</h1>',
+                props:{
+                    age:{
+                        type:Number
+                    }
+                }
+            })
+        }
+    })
+</script>
+</body>
+</html>

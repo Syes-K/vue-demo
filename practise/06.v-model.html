@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h3>lazy</h3>
+        <input type="text" v-model.lazy="lazy"  >
+        <h3>number</h3>
+        <input type="text" v-model.number="number" type="number">
+        <h3>trim</h3>
+        <input type="text" v-model.trim="trim">
+    </div>
+    <script>
+        let vm = new Vue({
+            el:'#app',
+            data:{
+                lazy:'lazy',
+                number:1,
+                trim:'t r i m'
+            }
+        });
+        vm.$watch('lazy',function (...args) {
+            console.log(args)
+        });
+        vm.$watch('number',function (...args) {
+            console.log(args)
+        })
+        vm.$watch('trim',function (...args) {
+            console.log(args)
+        })
+    </script>
+</body>
+</html>

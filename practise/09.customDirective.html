@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <p v-high-light>this is my custom directive!!!</p>
+</div>
+<script>
+    Vue.directive('high-light',{
+        inserted:function (el,...args) {
+            el.style.border='solid red 1px';
+        }
+    });
+    let vm = new Vue({
+        el:'#app'
+    });
+</script>
+</body>
+</html>

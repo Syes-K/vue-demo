@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <h3>base component</h3>
+    <input type="text" v-model="msg" lazy>
+    <my-base :msg="msg"></my-base>
+    <h3 ref="h31">valid</h3>
+    <my-valid :age="3" :weight="41" sex="F" ref="valid1"></my-valid>
+    <button @click="logValid($refs.valid1,$refs.h31)"> log valid component</button>
+    <hr>
+    <h3>events</h3>
+    {{messages}}
+    <div>
+        <button @click="clearMessage()">clear</button>
+    </div>
+    <my-event @child-echo="childEcho"></my-event>
+    <h3>slot 分发内容</h3>
+    <my-slot>
+        <p>this is slot content</p>
+        <template slot="slot1" scope="props">
+            <p>this is slot1 content:{{props.text}}</p>
+        </template>
+
+        <p slot="slot2">this is slot2 content</p>
+    </my-slot>
+    <h3>custom input</h3>
+    age
+    <my-input v-model="age"></my-input>:
+    {{age}}
+    <br>
+    salary
+    <my-input v-model="salary"></my-input>:
+    {{salary}}
+</div>
+<script>
+    Vue.component('my-base', Vue.extend({
+        props: ['msg'],
+        data: function () {
+            return {currentComponent: 'my-child2'}
+        },
+        template: `
+            <div>{{msg}}
+                <my-child></my-child>
+
+                <label>currentComponent</label> <input type="text" v-model="currentComponent">
+                <component :is="currentComponent"></component>
+            </div>
+        `,
+        components: {
+            'my-child': Vue.extend({
+                template: '<p>this is child</p>'
+            }),
+            'my-child2': Vue.extend({
+                template: '<p>this is child2</p>'
+            })
+        }
+    }));
+    Vue.component('my-valid', Vue.extend({
+        props: {
+            age: Number,
+            sex: {
+                type: String,
+                default: 'M',
+                coerce: function (v) {
+                    return {M: 'boy', F: 'girl'}[v];
+                }
+            },
+            weight: {
+                type: Number,
+                validator: function (v) {
+                    return v > 40
+                }
+            }
+        },
+        template: `
+            <div>
+                <p>my age is {{age}},and i am a  {{sex}}</p>
+                <p>my weight is {{weight}} kg!</p>
+            </div>
+        `,
+        methods: {
+            getType: function () {
+                return 'myValid';
+            },
+            _getType: function () {
+                return 'myValid';
+            },
+            GetType: function () {
+                return 'myValid';
+            }
+        }
+    }));
+
+    Vue.component('my-event', Vue.extend({
+        data: function () {
+            return {msg: 'hello'}
+        },
+        template: `
+            <div>
+                <input type="text" v-model="msg" @keyup.enter="notify()"> <button @click="notify()">send message</button>
+            </div>
+        `,
+        methods: {
+            notify: function () {
+                this.$emit('child-echo', this.msg);
+                this.msg = '';
+            }
+        }
+    }));
+    Vue.component('my-slot', Vue.extend({
+        template: `
+            <div>
+                >this is child component!!!
+                <slot>如果没有分发内容则显示我。</slot>
+                <slot name="slot1" :text="ppp"></slot>
+                <slot name="slot2">slot2</slot>
+            </div>`,
+        data: function () {
+            return {
+                ppp: 'xc'
+            }
+        }
+    }));
+    Vue.component('my-input', Vue.extend({
+        template: `
+               <button @click="add()">{{selfValue}}++</button>
+        `,
+        props: ['value'],
+        data: function () {
+            return {selfValue: ''}
+        },
+        created: function () {
+            this.selfValue = this.value;
+        },
+        methods: {
+            add: function () {
+                this.selfValue++;
+                this.$emit('input', this.selfValue)
+            }
+        }
+    }));
+    new Vue({
+        el: '#app',
+        data: {
+            age: 12,
+            salary:3000,
+            msg: 'hello world!!!',
+            messages: []
+        },
+        methods: {
+            logValid: function (...c) {
+                console.log(c);
+            },
+            childEcho: function (msg) {
+                msg && this.messages.push(msg)
+            },
+            clearMessage: function () {
+                this.messages = [];
+            }
+        }
+    });
+</script>
+</body>
+</html>

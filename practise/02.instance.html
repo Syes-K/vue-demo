@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    {{a}}
+    <input type="text" v-model="a">
+</div>
+<script>
+    let  vm = new Vue({
+        el:'#app',
+        data:{
+            a:'test'
+        },
+        methods:{},
+        created: function () {
+            // `this` 指向 vm 实例
+            console.log('created a is: ' + this.a)
+        },
+        mounted:function () {
+            // `this` 指向 vm 实例
+            console.log('mounted a is: ' + this.a)
+        },
+        updated:function () {
+            // `this` 指向 vm 实例
+            console.log('updated a is: ' + this.a)
+        }
+    });
+    vm.$watch('a',function (newValue,oldValue) {
+        console.log(newValue,oldValue)
+    })
+</script>
+
+</body>
+</html>

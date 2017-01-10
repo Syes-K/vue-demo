@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+    <style>
+        #app > div {
+            background-color: #f6f6f6;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <h3>冒泡</h3>
+    <div @click="dosomething('parent div')">
+        <button @click="dosomething('children button')">click me</button>
+    </div>
+    <h3>no 冒泡</h3>
+    <div @click="dosomething('parent div')">
+        <button @click.stop="dosomething('children button')">click me</button>
+    </div>
+    <h3>element 默认行为</h3>
+    <a href="http://www.baidu.com" @click="dosomething(this)">baidu</a>
+    <h3 ref="h3">阻止element 默认行为</h3>
+    <a href="http://www.baidu.com" @click.prevent="dosomething($refs.h3)">baidu</a>
+    <h3>capture</h3>
+    <div @click.capture.stop="dosomething('parent div')">
+        <button @click.capture="dosomething('children button')">click me</button>
+    </div>
+
+    <h3>self</h3>
+    <div @click.self="dosomething('parent div')">
+        <button @click="dosomething('children button')">click me</button>
+    </div>
+    <h3>key code</h3>
+    <div>
+        enter<input type="text" @keyup.13="dosomething('press enter')">
+        esc<input type="text" @keyup.esc="dosomething('press esc')">
+        f1<input type="text" @keyup.ffff1="dosomething('press f1')">
+    </div>
+</div>
+<script>
+    Vue.config.keyCodes.ffff1 = 112;
+    let vm = new Vue({
+        el: '#app',
+        data: {},
+        methods: {
+            dosomething: function (...args) {
+                console.log(args);
+            }
+        }
+    })
+</script>
+</body>
+</html>
