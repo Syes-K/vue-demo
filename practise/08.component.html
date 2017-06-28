@@ -32,7 +32,7 @@
     <h3>custom input</h3>
     age
     <my-input v-model="age"></my-input>:
-    {{age}}
+    <input type="text" v-model="age">
     <br>
     salary
     <my-input v-model="salary"></my-input>:
@@ -133,11 +133,16 @@
         `,
         props: ['value'],
         data: function () {
-            return {selfValue: ''}
+            return {selfValue: this.value}
         },
-        created: function () {
+        watch:{
+          value:function(){
             this.selfValue = this.value;
+          }
         },
+        // mounted: function () {
+        //     this.selfValue = this.value;
+        // },
         methods: {
             add: function () {
                 this.selfValue++;
